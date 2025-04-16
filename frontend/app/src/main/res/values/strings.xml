@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">GOEvents</string>
+    <string name="title_discover">Discover</string>
+    <string name="title_savedevents">Saved Events</string>
+    <string name="title_profile">Profile</string>
+</resources>
