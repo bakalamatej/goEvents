@@ -1,6 +1,6 @@
 # GOEvents
 
-**GOEvents** is a web application for creating, managing, and discovering events in your city. Built with a Go backend, it's designed to make community events more accessible and easier to organize.
+**GOEvents** is a web application for creating, managing, and discovering events in your city. Built with a springboot backend, it's designed to make community events more accessible and easier to organize.
 
 ---
 
