@@ -1,6 +1,6 @@
 package com.goevents.backend.enums
 
-enum class UserType {
+enum class AccountType {
     USER,
     COMPANY,
     ADMIN

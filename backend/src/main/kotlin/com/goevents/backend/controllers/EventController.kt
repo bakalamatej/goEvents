@@ -22,7 +22,7 @@ import java.util.Date
 @RestController
 @RequestMapping("/events")
 class EventController (
-    private  val repository: EventRepository
+    private  val eventRepository: EventRepository
 ){
     data class EventRequest (
         val id: String?,
@@ -53,7 +53,7 @@ class EventController (
         @Valid @RequestBody body: EventRequest
     ): EventResponse {
         val ownerId = SecurityContextHolder.getContext().authentication.principal as String
-        val event = repository.save(
+        val event = eventRepository.save(
             Event(
                 id = body.id?.let {ObjectId(it)} ?: ObjectId.get(),
                 title = body.title,
@@ -79,7 +79,7 @@ class EventController (
         return try {
             val objectId = ObjectId(id)
             val ownerId = SecurityContextHolder.getContext().authentication.principal as String
-            val existingEvent = repository.findById(objectId).orElse(null)
+            val existingEvent = eventRepository.findById(objectId).orElse(null)
 
             if (existingEvent == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event not found.")
@@ -97,7 +97,7 @@ class EventController (
                 imageUrl = updatedEvent.imageUrl,
                 link = updatedEvent.link
             )
-            repository.save(eventToUpdate)
+            eventRepository.save(eventToUpdate)
             ResponseEntity.ok("Event updated successfully.")
         } catch (e: IllegalArgumentException) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid event ID format.")
@@ -111,7 +111,7 @@ class EventController (
         @RequestParam(required = false) eventType: EventType?,
         @RequestParam(required = false) startDate: Date?
     ): List<EventResponse> {
-        val events = repository.findAll()
+        val events = eventRepository.findAll()
 
         return events.filter { event ->
             (title == null || event.title.contains(title, ignoreCase = true)) &&
@@ -124,7 +124,7 @@ class EventController (
     @GetMapping("/my")
     fun findByOwnerId(): List<EventResponse> {
         val ownerId = SecurityContextHolder.getContext().authentication.principal as String
-        return repository.findByOwnerId(ObjectId(ownerId)).map {
+        return eventRepository.findByOwnerId(ObjectId(ownerId)).map {
             it.toResponse()
         }
     }
@@ -134,7 +134,7 @@ class EventController (
         return try {
             val objectId = ObjectId(id)
             val ownerId = SecurityContextHolder.getContext().authentication.principal as String
-            val event = repository.findById(objectId).orElse(null)
+            val event = eventRepository.findById(objectId).orElse(null)
 
             if (event == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event not found.")
@@ -142,7 +142,7 @@ class EventController (
             if (event.ownerId.toHexString() != ownerId) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this event.")
             }
-            repository.deleteById(objectId)
+            eventRepository.deleteById(objectId)
             ResponseEntity.ok("Event deleted successfully.")
         } catch (e: IllegalArgumentException) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid event ID format.")

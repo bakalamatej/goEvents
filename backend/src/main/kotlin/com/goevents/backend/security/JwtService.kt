@@ -1,6 +1,6 @@
 package com.goevents.backend.security
 
-import com.goevents.backend.enums.UserType
+import com.goevents.backend.enums.AccountType
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -21,7 +21,7 @@ class JwtService(
 
     private fun generateToken(
         userId: String,
-        userType: UserType,
+        accountType: AccountType,
         type: String,
         expiry: Long
     ): String {
@@ -29,7 +29,7 @@ class JwtService(
         val expiryDate = Date(now.time + expiry)
         return Jwts.builder()
             .subject(userId)
-            .claim("userType", userType.name)
+            .claim("userType", accountType.name)
             .claim("type", type)
             .issuedAt(now)
             .expiration(expiryDate)
@@ -37,12 +37,12 @@ class JwtService(
             .compact()
     }
 
-    fun generateAccessToken(userId: String, userType: UserType): String {
-        return generateToken(userId, userType,"access", accessTokenValidityMs)
+    fun generateAccessToken(userId: String, accountType: AccountType): String {
+        return generateToken(userId, accountType,"access", accessTokenValidityMs)
     }
 
-    fun generateRefreshToken(userId: String, userType: UserType): String {
-        return generateToken(userId, userType,"refresh", refreshTokenValidityMs)
+    fun generateRefreshToken(userId: String, accountType: AccountType): String {
+        return generateToken(userId, accountType,"refresh", refreshTokenValidityMs)
     }
 
     fun validateAccessToken(token: String): Boolean {
@@ -65,7 +65,7 @@ class JwtService(
         return claims.subject
     }
 
-    fun getUserTypeFromToken(token: String): UserType {
+    fun getUserTypeFromToken(token: String): AccountType {
         val claims = parseAllClaims(token) ?: throw ResponseStatusException(
             HttpStatusCode.valueOf(401),
             "Invalid token."
@@ -73,7 +73,7 @@ class JwtService(
         val userTypeString = claims["userType"] as? String
             ?: throw ResponseStatusException(HttpStatusCode.valueOf(400), "userType claim not found")
         return try {
-            UserType.valueOf(userTypeString)
+            AccountType.valueOf(userTypeString)
         } catch (e: IllegalArgumentException) {
             throw ResponseStatusException(HttpStatusCode.valueOf(400), "Invalid userType value")
         }

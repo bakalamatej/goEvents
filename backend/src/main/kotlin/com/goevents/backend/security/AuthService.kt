@@ -4,6 +4,7 @@ import com.goevents.backend.database.model.RefreshToken
 import com.goevents.backend.database.model.User
 import com.goevents.backend.database.repository.RefreshTokenRepository
 import com.goevents.backend.database.repository.UserRepository
+import com.goevents.backend.enums.AccountType
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -47,8 +48,8 @@ class AuthService(
         if(!hashEncoder.matches(password, user.hashedPassword)) {
             throw BadCredentialsException("Invalid credentials.")
         }
-        val newAccessToken = jwtService.generateAccessToken(user.id.toHexString(), user.userType)
-        val newRefreshToken = jwtService.generateRefreshToken(user.id.toHexString(), user.userType)
+        val newAccessToken = jwtService.generateAccessToken(user.id.toHexString(), user.accountType)
+        val newRefreshToken = jwtService.generateRefreshToken(user.id.toHexString(), user.accountType)
 
         storeRefreshToken(user.id, newRefreshToken)
 
@@ -87,8 +88,8 @@ class AuthService(
             )
         refreshTokenRepository.deleteByUserIdAndHashedToken(user.id, hashed)
 
-        val newAccessToken = jwtService.generateAccessToken(userId, user.userType)
-        val newRefreshToken = jwtService.generateRefreshToken(userId, user.userType)
+        val newAccessToken = jwtService.generateAccessToken(userId, user.accountType)
+        val newRefreshToken = jwtService.generateRefreshToken(userId, user.accountType)
 
         storeRefreshToken(user.id, newRefreshToken)
 
