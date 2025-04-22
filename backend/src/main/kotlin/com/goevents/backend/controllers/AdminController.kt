@@ -21,8 +21,8 @@ class AdminController(
 ) {
 
     data class ChangeAccountTypeRequest(
-        val targetUserId: String,
-        val newAccountType: AccountType
+        val userId: String,
+        val accountType: AccountType
     )
 
     @PostMapping("/change-account-type")
@@ -34,11 +34,11 @@ class AdminController(
         val currentUser = userRepository.findById(ObjectId(currentUserId)).orElseThrow {
             ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.")
         }
-        /*if (currentUser.accountType != AccountType.ADMIN) {
-            throw ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can change account types.")
-        }*/
+        if (currentUser.accountType != AccountType.ADMIN) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can change account types.")
+        }
         return try {
-            userService.changeAccountType(ObjectId(body.targetUserId), body.newAccountType)
+            userService.changeAccountType(ObjectId(body.userId), body.accountType)
             ResponseEntity.ok("Account type updated successfully.")
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to change account type: ${e.message}")
