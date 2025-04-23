@@ -1,43 +1,43 @@
-GOEVENTS
+# GOEVENTS
 
-GOEvents is an andoroid application for creating, managing, and discovering events in your city. It features a Kotlin Android frontend (in progress) and a functional Spring Boot + MongoDB REST API backend with JWT-based authentication.
-
-
-TECH STACK
-
--Frontend: Kotlin (Android) – in development
-
--Backend: Spring Boot (Java)
-
--Database: MongoDB
-
--API: REST
-
--Authentication: JWT (JSON Web Tokens)
+**GOEvents** is an andoroid application for creating, managing, and discovering events in your city. It features a Kotlin Android frontend (in progress) and a functional Spring Boot + MongoDB REST API backend with JWT-based authentication.
 
 
-FEATURES
+## TECH STACK
 
--JWT-based login & role-based access
+**Frontend:** Kotlin (Android) – in development
 
--Create, update, and delete events
+**Backend:** Spring Boot (Java)
 
--Search & filter events by title, date, location, and type
+**Database:** MongoDB
 
--User accounts: organizers & attendees
+**API:** REST
 
--Kotlin Android frontend (WIP)
+**Authentication:** JWT (JSON Web Tokens)
 
 
-AUTHENTICATION
+## FEATURES
+
+JWT-based login & role-based access
+
+Create, update, and delete events
+
+Search & filter events by title, date, location, and type
+
+User accounts: organizers & attendees
+
+Kotlin Android frontend (WIP)
+
+
+## AUTHENTICATION
 
 The backend uses JWT (JSON Web Tokens) for secure authentication and authorization. Upon login, the user receives a JWT which must be included in the Authorization header for protected routes.
 
-Example:
+### Example:
 
 Authorization: Bearer `<your-jwt-token>`
 
-Auth Endpoints:
+**Auth Endpoints:**
 
 POST /auth/register – Register a new user
 
@@ -47,15 +47,15 @@ POST /auth/login – Authenticate and receive JWT
 Protected endpoints like POST /events, DELETE /events/{id} require a valid token
 
 
-BACKEND (Spring Boot + MongoDB)
+## BACKEND (Spring Boot + MongoDB)
 
--REST API with CRUD endpoints
+REST API with CRUD endpoints
 
--Filtering via query parameters
+Filtering via query parameters
 
--MongoDB for NoSQL flexibility
+MongoDB for NoSQL flexibility
 
--Secure access via JWT
+Secure access via JWT
 
 
-FEEL FREE TO USE, IMPROVE OR SHARE 
+### FEEL FREE TO USE, IMPROVE OR SHARE!
