@@ -35,7 +35,7 @@ The backend uses JWT (JSON Web Tokens) for secure authentication and authorizati
 
 Example:
 
-Authorization: Bearer <your-jwt-token>
+Authorization: Bearer `<your-jwt-token>`
 
 Auth Endpoints:
 
