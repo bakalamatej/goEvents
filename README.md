@@ -26,7 +26,7 @@ Search & filter events by title, date, location, and type
 
 User accounts: organizers & attendees
 
-Kotlin Android frontend (WIP)
+Kotlin Android frontend (in development)
 
 
 ## AUTHENTICATION
