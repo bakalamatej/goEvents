@@ -7,7 +7,7 @@
 
 **Frontend:** Kotlin (Android) – in development
 
-**Backend:** Spring Boot (Java)
+**Backend:** Spring Boot
 
 **Database:** MongoDB
 
