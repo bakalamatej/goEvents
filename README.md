@@ -58,5 +58,5 @@ MongoDB for NoSQL flexibility
 Secure access via JWT
 
 
-  
+
 ### Feel free to use, improve or share!
