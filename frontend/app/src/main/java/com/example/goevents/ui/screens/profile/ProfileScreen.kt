@@ -1,4 +1,4 @@
-package com.example.goevents.ui.home
+package com.example.goevents.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.goevents.databinding.FragmentDiscoverBinding
+import com.example.goevents.databinding.FragmentProfileBinding
 
-class DiscoverFragment : Fragment() {
+class ProfileScreen : Fragment() {
 
-    private var _binding: FragmentDiscoverBinding? = null
+    private var _binding: FragmentProfileBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class DiscoverFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(DiscoverViewModel::class.java)
+        val notificationsViewModel =
+            ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        _binding = FragmentDiscoverBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDiscover
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textProfile
+        notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

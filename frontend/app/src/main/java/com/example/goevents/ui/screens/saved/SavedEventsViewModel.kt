@@ -1,4 +1,4 @@
-package com.example.goevents.ui.dashboard
+package com.example.goevents.ui.savedevents
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
