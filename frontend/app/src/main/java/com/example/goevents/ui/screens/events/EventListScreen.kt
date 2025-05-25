@@ -1,42 +1,75 @@
-package com.example.goevents.ui.home
+package com.example.goevents.ui.screens.events
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.goevents.databinding.FragmentDiscoverBinding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.goevents.navigation.Screen
+import com.example.goevents.ui.components.EventCard
+import com.google.accompanist.swiperefresh.*
 
-class EventListScreen : Fragment() {
+@Composable
+fun EventListScreen(
+    onEventClick: (String) -> Unit,
+    viewModel: EventViewModel = hiltViewModel()
+) {
+    val events by viewModel.events.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
 
-    private var _binding: FragmentDiscoverBinding? = null
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    var selectedEvent by remember { mutableStateOf<com.example.goevents.domain.model.Event?>(null) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(EventViewModel::class.java)
+    SwipeRefresh(
+        state = swipeRefreshState,
+        onRefresh = { viewModel.refreshEvents() }
+    ) {
+        when {
+            error != null -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = error ?: "Unknown error",
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
 
-        _binding = FragmentDiscoverBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+            events.isEmpty() && !isLoading -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = "No events available",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
 
-        val textView: TextView = binding.textDiscover
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+            else -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(events) { event ->
+                        EventCard(
+                            event = event,
+                            onClick = { selectedEvent = event }
+                        )
+                    }
+                }
+            }
         }
-        return root
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    selectedEvent?.let { event ->
+        EventDetailModal(
+            event = event,
+            onDismiss = { selectedEvent = null }
+        )
     }
 }

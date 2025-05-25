@@ -1,4 +1,4 @@
-package com.example.goevents.ui.profile
+package com.example.goevents.ui.screens.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
