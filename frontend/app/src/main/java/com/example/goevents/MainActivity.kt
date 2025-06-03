@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.goevents.domain.model.Event
 import com.example.goevents.domain.model.EventType
 import com.example.goevents.navigation.NavGraph
+import com.example.goevents.ui.MainScreen
 import com.example.goevents.ui.components.EventCard
 import com.example.goevents.ui.screens.events.EventListScreen
 import com.example.goevents.ui.screens.events.EventViewModel
@@ -39,9 +40,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            App()
+            GoEventsTheme {
+                MainScreen()
+            }
         }
-    }}
+    }
+}
 
 @Composable
 fun App() {
@@ -52,154 +56,3 @@ fun App() {
         }
     }
 }
-
-/*
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val viewModel: EventViewModel = hiltViewModel()
-            EventListScreen(
-                viewModel = viewModel,
-                onEventClick = { eventId ->
-                    // TODO: Handle navigation to detail screen here
-                }
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewEventCard() {
-    val sampleEvent = Event(
-        id = "1",
-        title = "Sample Event Title",
-        description = "This is a sample event description.",
-        startDate = Date(),
-        endDate = Date(),
-        location = "Sample Location",
-        eventType = EventType.CONCERT,
-        imageUrl = "https://via.placeholder.com/300",
-        link = null,
-        createdAt = Instant.now()
-    )
-
-    EventCard(
-        event = sampleEvent,
-        onClick = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewEventListScreen() {
-    val sampleEvents = listOf(
-        Event(
-            id = "1",
-            title = "Sample Event 1",
-            description = "Description for event 1",
-            startDate = Date(),
-            endDate = Date(),
-            location = "Location 1",
-            eventType = EventType.CONCERT,
-            imageUrl = "https://via.placeholder.com/300",
-            link = null,
-            createdAt = Instant.now()
-        ),
-        Event(
-            id = "2",
-            title = "Sample Event 2",
-            description = "Description for event 2",
-            startDate = Date(),
-            endDate = Date(),
-            location = "Location 2",
-            eventType = EventType.SPORTS,
-            imageUrl = "https://via.placeholder.com/300",
-            link = null,
-            createdAt = Instant.now()
-        ),
-        Event(
-            id = "3",
-            title = "Sample Event 3",
-            description = "Description for event 3",
-            startDate = Date(),
-            endDate = Date(),
-            location = "Location 3",
-            eventType = EventType.SPORTS,
-            imageUrl = "https://via.placeholder.com/300",
-            link = null,
-            createdAt = Instant.now()
-        ),
-        Event(
-            id = "4",
-            title = "Sample Event 4",
-            description = "Description for event 4",
-            startDate = Date(),
-            endDate = Date(),
-            location = "Location 4",
-            eventType = EventType.SPORTS,
-            imageUrl = "https://via.placeholder.com/300",
-            link = null,
-            createdAt = Instant.now()
-        )
-    )
-
-    EventListScreenPreviewContent(
-        events = sampleEvents,
-        isLoading = false,
-        error = null,
-        onEventClick = {},
-        onRefresh = {}
-    )
-}
-
-@Composable
-fun EventListScreenPreviewContent(
-    events: List<Event>,
-    isLoading: Boolean,
-    error: String?,
-    onEventClick: (String) -> Unit,
-    onRefresh: () -> Unit
-) {
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
-
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = onRefresh
-    ) {
-        when {
-            error != null -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        text = error,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            }
-
-            events.isEmpty() && !isLoading -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        text = "No events available",
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            }
-
-            else -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(events) { event ->
-                        EventCard(event = event, onClick = { onEventClick(event.id) })
-                    }
-                }
-            }
-        }
-    }
-}*/
