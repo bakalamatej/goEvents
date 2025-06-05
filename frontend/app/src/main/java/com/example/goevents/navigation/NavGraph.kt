@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.goevents.ui.screens.events.AddEventScreen
 import com.example.goevents.ui.screens.events.EventListScreen
 import com.example.goevents.ui.screens.profile.ProfileScreen
 import com.example.goevents.ui.screens.saved.SavedEventsListScreen
@@ -32,7 +33,16 @@ fun NavGraph(
         }
 
         composable(Screen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
+        }
+
+        composable(Screen.AddEvent.route) {
+            AddEventScreen(
+                navController = navController,
+                onSaveEvent = { title, description, location, type, startDate, endDate, imageUrl, link ->
+                    // TODO: backend call
+                }
+            )
         }
     }
 }

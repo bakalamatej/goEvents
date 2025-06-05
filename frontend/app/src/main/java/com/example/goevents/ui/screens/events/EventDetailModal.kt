@@ -31,7 +31,7 @@ fun EventDetailModal(
         Box(
             Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFdbc86e), shape = MaterialTheme.shapes.large)
+                .background(MaterialTheme.colorScheme.secondary, shape = MaterialTheme.shapes.large)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(

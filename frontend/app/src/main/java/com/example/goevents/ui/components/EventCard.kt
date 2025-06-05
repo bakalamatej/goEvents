@@ -36,7 +36,7 @@ fun EventCard(
             .padding(vertical = 3.dp)
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFdbc86e))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             event.imageUrl?.let { url ->

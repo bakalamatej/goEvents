@@ -7,4 +7,5 @@ sealed class Screen(val route: String) {
     }
     object SavedEvents : Screen("saved")
     object Profile : Screen("profile")
+    object AddEvent : Screen("add_event")
 }
