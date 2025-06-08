@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,7 +27,14 @@ fun EventCard(
     event: Event,
     onClick: () -> Unit
 ) {
-    val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd.M.yyyy HH:mm", Locale.getDefault())
+
+    val startDateParsed = remember(event.startDate) {
+        try { inputFormat.parse(event.startDate) } catch (e: Exception) { null }
+    }
+
+    val startDateText = startDateParsed?.let { outputFormat.format(it) } ?: "Invalid start date"
 
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -63,7 +71,7 @@ fun EventCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = dateFormat.format(event.startDate),
+                    text = startDateText,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

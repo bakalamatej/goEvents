@@ -1,5 +1,6 @@
 package com.goevents.backend.controllers
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.goevents.backend.database.model.Event
 import com.goevents.backend.database.repository.EventRepository
 import com.goevents.backend.enums.EventType
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.bson.types.ObjectId
 import org.hibernate.validator.constraints.URL
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -31,8 +33,10 @@ class EventController (
         @field:NotBlank(message = "Description must not be blank.")
         val description: String,
         @field:FutureOrPresent(message = "Start date must be in the future or present.")
+        @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
         val startDate: Date,
         @field:NotNull(message = "End date must not be null.")
+        @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
         val endDate: Date,
         @field:NotBlank(message = "Location must not be blank.")
         val location: String,
@@ -52,7 +56,10 @@ class EventController (
     fun save(
         @Valid @RequestBody body: EventRequest
     ): EventResponse {
-        val ownerId = SecurityContextHolder.getContext().authentication.principal as String
+        //val ownerId = SecurityContextHolder.getContext().authentication.principal as String
+
+        val ownerId = ObjectId.get() // TEST PURPOSES ONLY
+
         val event = eventRepository.save(
             Event(
                 id = body.id?.let {ObjectId(it)} ?: ObjectId.get(),
@@ -65,7 +72,8 @@ class EventController (
                 imageUrl = body.imageUrl,
                 link = body.link,
                 createdAt = Instant.now(),
-                ownerId = ObjectId(ownerId)
+                //ownerId = ObjectId(ownerId)
+                ownerId = ownerId
             )
         )
         return event.toResponse()
@@ -109,7 +117,9 @@ class EventController (
         @RequestParam(required = false) title: String?,
         @RequestParam(required = false) location: String?,
         @RequestParam(required = false) eventType: EventType?,
-        @RequestParam(required = false) startDate: Date?
+        @RequestParam(required = false)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        startDate: Date?
     ): List<EventResponse> {
         val events = eventRepository.findAll()
 

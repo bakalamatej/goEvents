@@ -1,4 +1,4 @@
-  package com.goevents.backend
+package com.goevents.backend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

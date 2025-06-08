@@ -22,7 +22,7 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GoEventsApiService::class.java)
-    }
+     }
 
     @Provides
     @Singleton

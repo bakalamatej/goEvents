@@ -2,9 +2,13 @@ package com.example.goevents.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.goevents.ui.screens.auth.AuthScreen
+import com.example.goevents.ui.screens.auth.AuthViewModel
 import com.example.goevents.ui.screens.events.AddEventScreen
 import com.example.goevents.ui.screens.events.EventListScreen
 import com.example.goevents.ui.screens.profile.ProfileScreen
@@ -15,11 +19,24 @@ fun NavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    //val authViewModel: AuthViewModel = hiltViewModel()
+
     NavHost(
         navController = navController,
         startDestination = Screen.EventList.route,
         modifier = modifier
     ) {
+        /*composable(Screen.Login.route) {
+            AuthScreen(
+                navController = navController,
+                onLogin = { email, password ->
+                    authViewModel.login(email, password)
+                },
+                isLoading = authViewModel.isLoggingIn,
+                loginError = authViewModel.loginError
+            )
+        }*/
+
         composable(Screen.EventList.route) {
             EventListScreen(
                 onEventClick = { eventId ->
@@ -38,10 +55,7 @@ fun NavGraph(
 
         composable(Screen.AddEvent.route) {
             AddEventScreen(
-                navController = navController,
-                onSaveEvent = { title, description, location, type, startDate, endDate, imageUrl, link ->
-                    // TODO: backend call
-                }
+                navController = navController
             )
         }
     }

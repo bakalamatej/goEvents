@@ -25,7 +25,18 @@ fun EventDetailModal(
     event: Event,
     onDismiss: () -> Unit
 ) {
-    val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd.M.yyyy HH:mm", Locale.getDefault())
+
+    val startDateParsed = remember(event.startDate) {
+        try { inputFormat.parse(event.startDate) } catch (e: Exception) { null }
+    }
+    val endDateParsed = remember(event.endDate) {
+        try { inputFormat.parse(event.endDate) } catch (e: Exception) { null }
+    }
+
+    val startDateText = startDateParsed?.let { outputFormat.format(it) } ?: "Invalid start date"
+    val endDateText = endDateParsed?.let { outputFormat.format(it) } ?: "Invalid end date"
 
     Dialog(onDismissRequest = onDismiss) {
         Box(
@@ -52,10 +63,10 @@ fun EventDetailModal(
                     Spacer(modifier = Modifier.height(12.dp))
                 }
                 Text("${event.eventType}")
-                Text("Description: ${event.description}")
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(event.location)
-                Text("${dateFormat.format(event.startDate)} - ${dateFormat.format(event.endDate)}")
+                Text("$startDateText - $endDateText")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Description: ${event.description}")
             }
         }
     }

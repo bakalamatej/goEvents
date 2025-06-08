@@ -1,8 +1,8 @@
 package com.example.goevents.ui.screens.events
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.goevents.data.remote.dto.EventRequest
 import com.example.goevents.domain.model.Event
 import com.example.goevents.data.repository.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,6 +44,46 @@ class EventViewModel @Inject constructor(
                 //e.printStackTrace()
                 //Log.e("EventViewModel", "Error fetching events", e)
                 _error.value = "Failed to load events: ${e.localizedMessage}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun createEvent(eventRequest: EventRequest, onResult: (Boolean, String?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = repository.createEvent(eventRequest)
+                if (response.isSuccessful) {
+                    onResult(true, null)
+                } else {
+                    onResult(false, "Failed: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                onResult(false, e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun filterEvents(
+        location: String? = null,
+        eventType: String? = null,
+        date: String? = null,
+        title: String? = null
+    ) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val filteredEvents = repository.getFilteredEvents(
+                    location = location,
+                    eventType = eventType,
+                    startDate = date,
+                    title = title
+                )
+                _events.value = filteredEvents
+                _error.value = null
+            } catch (e: Exception) {
+                _error.value = "Failed to filter: ${e.localizedMessage}"
             } finally {
                 _isLoading.value = false
             }
