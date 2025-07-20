@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.goevents.domain.model.EventType
@@ -23,11 +24,11 @@ fun FilterDialog(
     onDismiss: () -> Unit,
     onApply: (String?) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
     val eventTypes = EventType.entries.map { it.name }
 
-    var showDatePicker by remember { mutableStateOf(false) }
-    var isoDate by remember { mutableStateOf<String?>(null) }
+    var showDatePicker by rememberSaveable { mutableStateOf(false) }
+    var isoDate by rememberSaveable { mutableStateOf<String?>(null) }
 
     fun convertToISO8601(dateStr: String): String? {
         return try {

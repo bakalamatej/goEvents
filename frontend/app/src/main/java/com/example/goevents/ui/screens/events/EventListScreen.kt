@@ -8,11 +8,11 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.goevents.navigation.Screen
 import com.example.goevents.ui.components.EventCard
 import com.example.goevents.ui.components.FilterDialog
 import com.google.accompanist.swiperefresh.*
@@ -22,12 +22,12 @@ fun EventListScreen(
     onEventClick: (String) -> Unit,
     viewModel: EventViewModel = hiltViewModel()
 ) {
-    var showFilterDialog by remember { mutableStateOf(false) }
-    var filterLocation by remember { mutableStateOf("") }
-    var filterEventType by remember { mutableStateOf<String?>(null) }
-    var filterDate by remember { mutableStateOf<String?>(null) }
-    var selectedEvent by remember { mutableStateOf<com.example.goevents.domain.model.Event?>(null) }
-    var searchQuery by remember { mutableStateOf("") }
+    var showFilterDialog by rememberSaveable { mutableStateOf(false) }
+    var filterLocation by rememberSaveable { mutableStateOf("") }
+    var filterEventType by rememberSaveable { mutableStateOf<String?>(null) }
+    var filterDate by rememberSaveable { mutableStateOf<String?>(null) }
+    var selectedEvent by rememberSaveable { mutableStateOf<com.example.goevents.domain.model.Event?>(null) }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
 
     val events by viewModel.events.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()

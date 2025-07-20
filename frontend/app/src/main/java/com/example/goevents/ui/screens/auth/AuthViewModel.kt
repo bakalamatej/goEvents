@@ -2,6 +2,7 @@ package com.example.goevents.ui.screens.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.goevents.data.preferences.TokenManager
 import com.example.goevents.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val tokenManager: TokenManager
 ) : ViewModel() {
 
     private val _isLoggingIn = MutableStateFlow(false)
@@ -27,7 +29,15 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = authRepository.login(email, password)
-                if (!response.isSuccessful) {
+                if (response.isSuccessful) {
+                    val tokenAccess = response.body()?.accessToken
+                    val tokenRefresh = response.body()?.refreshToken
+                    if (!tokenAccess.isNullOrBlank() && !tokenRefresh.isNullOrBlank()) {
+                        tokenManager.saveTokens(tokenAccess, tokenRefresh)
+                    } else {
+                        _loginError.value = "Invalid server response"
+                    }
+                } else {
                     _loginError.value = "Invalid credentials"
                 }
             } catch (e: Exception) {

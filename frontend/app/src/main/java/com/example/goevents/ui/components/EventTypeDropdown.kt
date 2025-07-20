@@ -10,6 +10,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.example.goevents.domain.model.EventType
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,7 +20,7 @@ fun EventTypeDropdown(
     onTypeSelected: (String) -> Unit
 ) {
     val options = EventType.entries.map { it.name }
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,

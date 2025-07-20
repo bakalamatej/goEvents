@@ -27,6 +27,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.example.goevents.ui.components.EventTypeDropdown
 
 @Composable
@@ -34,16 +35,16 @@ fun AddEventScreen(
     navController: NavController,
     viewModel: EventViewModel = hiltViewModel()
 ) {
-    var title by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-    var type by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var imageUrl by remember { mutableStateOf("") }
-    var link by remember { mutableStateOf("") }
-    var startDate by remember { mutableStateOf("") }
-    var endDate by remember { mutableStateOf("") }
-    var startDateDisplay by remember { mutableStateOf("") }
-    var endDateDisplay by remember { mutableStateOf("") }
+    var title by rememberSaveable { mutableStateOf("") }
+    var location by rememberSaveable { mutableStateOf("") }
+    var type by rememberSaveable { mutableStateOf("") }
+    var description by rememberSaveable { mutableStateOf("") }
+    var imageUrl by rememberSaveable { mutableStateOf("") }
+    var link by rememberSaveable { mutableStateOf("") }
+    var startDate by rememberSaveable { mutableStateOf("") }
+    var endDate by rememberSaveable { mutableStateOf("") }
+    var startDateDisplay by rememberSaveable { mutableStateOf("") }
+    var endDateDisplay by rememberSaveable { mutableStateOf("") }
 
     val context = LocalContext.current
     val calendar = Calendar.getInstance()

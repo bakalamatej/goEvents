@@ -1,9 +1,10 @@
 [versions]
 accompanistSwiperefresh = "0.34.0"
 activityCompose = "1.10.1"
-agp = "8.10.1"
+agp = "8.11.0"
 coilCompose = "2.2.2"
 converterMoshi = "2.9.0"
+datastorePreferences = "1.1.7"
 hiltAndroid = "2.49"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.21"
@@ -33,6 +34,7 @@ uiTooling = "1.8.2"
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "lifecycleCompiler" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewmodelCompose" }
