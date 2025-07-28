@@ -16,11 +16,23 @@ class AuthViewModel @Inject constructor(
     private val tokenManager: TokenManager
 ) : ViewModel() {
 
+    private val _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn
+
     private val _isLoggingIn = MutableStateFlow(false)
     val isLoggingIn: StateFlow<Boolean> = _isLoggingIn
 
     private val _loginError = MutableStateFlow<String?>(null)
     val loginError: StateFlow<String?> = _loginError
+
+    private val _isRegistering = MutableStateFlow(false)
+    val isRegistering: StateFlow<Boolean> = _isRegistering
+
+    private val _registerError = MutableStateFlow<String?>(null)
+    val registerError: StateFlow<String?> = _registerError
+
+    private val _registerSuccess = MutableStateFlow(false)
+    val registerSuccess: StateFlow<Boolean> = _registerSuccess
 
     fun login(email: String, password: String) {
         _isLoggingIn.value = true
@@ -45,6 +57,42 @@ class AuthViewModel @Inject constructor(
             } finally {
                 _isLoggingIn.value = false
             }
+        }
+    }
+
+    fun register(email: String, name: String, password: String) {
+        _isRegistering.value = true
+        _registerError.value = null
+        _registerSuccess.value = false
+
+        viewModelScope.launch {
+            try {
+                val response = authRepository.register(email, name, password)
+                if (response.isSuccessful) {
+                    _registerSuccess.value = true
+                } else {
+                    _registerError.value = "Registration failed: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _registerError.value = e.message ?: "Registration failed"
+            } finally {
+                _isRegistering.value = false
+            }
+        }
+    }
+
+    fun setLoginError(message: String) {
+        _loginError.value = message
+    }
+
+    fun setRegisterError(message: String) {
+        _registerError.value = message
+    }
+
+    fun checkLoginStatus() {
+        viewModelScope.launch {
+            val token = tokenManager.getAccessToken()
+            _isLoggedIn.value = !token.isNullOrBlank()
         }
     }
 }

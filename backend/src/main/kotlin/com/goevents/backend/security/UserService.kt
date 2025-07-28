@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service
 class UserService(
     private val userRepository: UserRepository
 ) {
-
     fun changeAccountType(userId: ObjectId, newAccountType: AccountType) {
         val user = userRepository.findById(userId).orElseThrow {
             IllegalArgumentException("User not found.")

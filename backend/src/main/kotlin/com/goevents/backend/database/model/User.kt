@@ -8,7 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document("users")
 data class User(
     val email: String,
+    val name: String,
     val hashedPassword: String,
-    val accountType: AccountType = AccountType.USER,
+    val accountType: AccountType = AccountType.COMPANY,
     @Id val id: ObjectId = ObjectId()
 )

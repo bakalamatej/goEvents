@@ -4,6 +4,7 @@ import com.example.goevents.data.remote.dto.EventRequest
 import com.example.goevents.data.remote.dto.EventResponse
 import com.example.goevents.data.remote.dto.LoginRequest
 import com.example.goevents.data.remote.dto.LoginResponse
+import com.example.goevents.data.remote.dto.RegisterRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -28,4 +29,7 @@ interface GoEventsApiService {
 
     @POST("/auth/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
+
+    @POST("/auth/register")
+    suspend fun register(@Body registerRequest: RegisterRequest): Response<Void>
 }
