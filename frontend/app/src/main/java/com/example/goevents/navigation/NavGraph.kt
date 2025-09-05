@@ -1,15 +1,12 @@
 package com.example.goevents.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.goevents.ui.screens.auth.AuthScreen
+import com.example.goevents.ui.screens.auth.LoginScreen
 import com.example.goevents.ui.screens.auth.AuthViewModel
 import com.example.goevents.ui.screens.auth.RegisterScreen
 import com.example.goevents.ui.screens.events.AddEventScreen
@@ -30,7 +27,7 @@ fun NavGraph(
         modifier = modifier
     ) {
         composable(Screen.Login.route) {
-            AuthScreen(
+            LoginScreen(
                 navController = navController,
                 viewModel = authViewModel
             )
@@ -56,20 +53,8 @@ fun NavGraph(
         }
 
         composable(Screen.Profile.route) {
-            val viewModel: AuthViewModel = hiltViewModel()
-            val isLoggedIn by viewModel.isLoggedIn.collectAsState()
-
-            LaunchedEffect(Unit) {
-                viewModel.checkLoginStatus()
-            }
-
-            if (isLoggedIn) {
-                ProfileScreen(navController = navController)
-            } else {
-                AuthScreen(navController = navController)
-            }
+            ProfileScreen(navController = navController)
         }
-
 
         composable(Screen.AddEvent.route) {
             AddEventScreen(navController = navController)

@@ -1,6 +1,7 @@
 package com.example.goevents.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.*
@@ -53,6 +54,7 @@ fun FilterDialog(
                     value = location,
                     onValueChange = onLocationChange,
                     label = { Text("Location") },
+                    shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -69,6 +71,7 @@ fun FilterDialog(
                         label = { Text("Event Type") },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
                         colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                        shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
                             .menuAnchor()
                             .fillMaxWidth()
@@ -104,6 +107,7 @@ fun FilterDialog(
                     onValueChange = {},
                     label = { Text("Date") },
                     readOnly = true,
+                    shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
                         IconButton(onClick = { showDatePicker = true }) {
@@ -114,6 +118,7 @@ fun FilterDialog(
 
                 if (showDatePicker) {
                     DatePickerDialog(
+                        shape = RoundedCornerShape(12.dp),
                         onDismissRequest = { showDatePicker = false },
                         confirmButton = {
                             TextButton(onClick = {
@@ -144,6 +149,7 @@ fun FilterDialog(
                 }
             }
         },
+        shape = RoundedCornerShape(12.dp),
         confirmButton = {
             TextButton(onClick = {
                 onApply(isoDate)

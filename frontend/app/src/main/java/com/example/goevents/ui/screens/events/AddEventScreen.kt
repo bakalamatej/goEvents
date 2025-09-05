@@ -57,7 +57,7 @@ fun AddEventScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         SnackbarHost(hostState = snackbarHostState)
 
@@ -67,6 +67,7 @@ fun AddEventScreen(
             value = title,
             onValueChange = { title = it },
             label = { Text("Title") },
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -79,6 +80,7 @@ fun AddEventScreen(
             value = location,
             onValueChange = { location = it },
             label = { Text("Location") },
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -86,6 +88,7 @@ fun AddEventScreen(
             value = imageUrl,
             onValueChange = { imageUrl = it },
             label = { Text("Image URL (optional)") },
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -93,6 +96,7 @@ fun AddEventScreen(
             value = link,
             onValueChange = { link = it },
             label = { Text("External Link (optional)") },
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -100,14 +104,17 @@ fun AddEventScreen(
             value = description,
             onValueChange = { description = it },
             label = { Text("Description") },
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp)
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 26.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Button(
                 onClick = {
@@ -146,7 +153,7 @@ fun AddEventScreen(
                     contentColor = Color.Black
                 ),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .weight(1f)
                     .height(56.dp)
@@ -156,8 +163,6 @@ fun AddEventScreen(
                     fontSize = 16.sp
                 )
             }
-
-            Spacer(modifier = Modifier.width(16.dp))
 
             Button(
                 onClick = {
@@ -196,7 +201,7 @@ fun AddEventScreen(
                     contentColor = Color.Black
                 ),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .weight(1f)
                     .height(56.dp)
@@ -249,19 +254,14 @@ fun AddEventScreen(
                     }
                 }
             },
-            elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 6.dp,
-                pressedElevation = 12.dp
-            ),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = Color.Black
             ),
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
-                .align(Alignment.End)
+                .fillMaxWidth()
                 .height(50.dp)
-                .widthIn(min = 120.dp)
         ) {
             Text("Save", fontSize = 16.sp)
         }

@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val tokenManager: TokenManager
+    val tokenManager: TokenManager
 ) : ViewModel() {
 
     private val _isLoggedIn = MutableStateFlow(false)
@@ -25,6 +25,9 @@ class AuthViewModel @Inject constructor(
     private val _loginError = MutableStateFlow<String?>(null)
     val loginError: StateFlow<String?> = _loginError
 
+    private val _loginSuccess = MutableStateFlow(false)
+    val loginSuccess: StateFlow<Boolean> = _loginSuccess
+
     private val _isRegistering = MutableStateFlow(false)
     val isRegistering: StateFlow<Boolean> = _isRegistering
 
@@ -34,9 +37,13 @@ class AuthViewModel @Inject constructor(
     private val _registerSuccess = MutableStateFlow(false)
     val registerSuccess: StateFlow<Boolean> = _registerSuccess
 
+    private val _logoutSuccess = MutableStateFlow(false)
+    val logoutSuccess: StateFlow<Boolean> = _logoutSuccess
+
     fun login(email: String, password: String) {
         _isLoggingIn.value = true
         _loginError.value = null
+        _loginSuccess.value = false
 
         viewModelScope.launch {
             try {
@@ -46,6 +53,9 @@ class AuthViewModel @Inject constructor(
                     val tokenRefresh = response.body()?.refreshToken
                     if (!tokenAccess.isNullOrBlank() && !tokenRefresh.isNullOrBlank()) {
                         tokenManager.saveTokens(tokenAccess, tokenRefresh)
+
+                        _isLoggedIn.value = true
+                        _loginSuccess.value = true
                     } else {
                         _loginError.value = "Invalid server response"
                     }
@@ -71,7 +81,7 @@ class AuthViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     _registerSuccess.value = true
                 } else {
-                    _registerError.value = "Registration failed: ${response.message()}"
+                    _registerError.value = response.errorBody()?.string() ?: "Registration failed"
                 }
             } catch (e: Exception) {
                 _registerError.value = e.message ?: "Registration failed"
@@ -81,12 +91,11 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun setLoginError(message: String) {
-        _loginError.value = message
-    }
-
-    fun setRegisterError(message: String) {
-        _registerError.value = message
+    fun logout() {
+        viewModelScope.launch {
+            val success = authRepository.logout()
+            _logoutSuccess.value = success
+        }
     }
 
     fun checkLoginStatus() {
@@ -94,5 +103,25 @@ class AuthViewModel @Inject constructor(
             val token = tokenManager.getAccessToken()
             _isLoggedIn.value = !token.isNullOrBlank()
         }
+    }
+
+    fun setLoginSuccess(success: Boolean) {
+        _loginSuccess.value = success
+    }
+
+    fun resetLoginSuccess() {
+        _loginSuccess.value = false
+    }
+
+    fun setLoginError(message: String) {
+        _loginError.value = message
+    }
+
+    fun resetRegisterSuccess() {
+        _registerSuccess.value = false
+    }
+
+    fun setRegisterError(message: String) {
+        _registerError.value = message
     }
 }

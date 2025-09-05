@@ -25,7 +25,7 @@ class SecurityConfig (
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/auth/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/events").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/events").permitAll() // TEST PURPOSES ONLY
+                    //.requestMatchers(HttpMethod.POST, "/events").permitAll() // TEST PURPOSES ONLY
                     .dispatcherTypeMatchers(
                         DispatcherType.ERROR,
                         DispatcherType.FORWARD

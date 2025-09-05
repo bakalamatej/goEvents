@@ -1,7 +1,9 @@
 
 package com.example.goevents.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,6 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.unit.dp
 import com.example.goevents.domain.model.EventType
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +27,8 @@ fun EventTypeDropdown(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
+        onExpandedChange = { expanded = !expanded },
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
         OutlinedTextField(
             value = selectedType ?: "",
@@ -33,6 +37,7 @@ fun EventTypeDropdown(
             label = { Text("Event Type") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth()
@@ -40,7 +45,8 @@ fun EventTypeDropdown(
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
             options.forEach { option ->
                 DropdownMenuItem(

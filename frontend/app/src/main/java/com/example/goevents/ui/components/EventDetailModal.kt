@@ -1,15 +1,20 @@
-package com.example.goevents.ui.screens.events
+package com.example.goevents.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,10 +34,18 @@ fun EventDetailModal(
     val outputFormat = SimpleDateFormat("dd.M.yyyy HH:mm", Locale.getDefault())
 
     val startDateParsed = remember(event.startDate) {
-        try { inputFormat.parse(event.startDate) } catch (e: Exception) { null }
+        try {
+            inputFormat.parse(event.startDate)
+        } catch (e: Exception) {
+            null
+        }
     }
     val endDateParsed = remember(event.endDate) {
-        try { inputFormat.parse(event.endDate) } catch (e: Exception) { null }
+        try {
+            inputFormat.parse(event.endDate)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     val startDateText = startDateParsed?.let { outputFormat.format(it) } ?: "Invalid start date"
@@ -40,32 +53,36 @@ fun EventDetailModal(
 
     Dialog(onDismissRequest = onDismiss) {
         Box(
-            Modifier
+            Modifier.Companion
                 .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.secondary, shape = MaterialTheme.shapes.large)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.Companion.padding(16.dp)) {
                 Text(
                     text = event.title,
-                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Companion.Bold
+                    )
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.Companion.height(8.dp))
                 event.imageUrl?.let { url ->
                     Image(
                         painter = rememberAsyncImagePainter(url),
                         contentDescription = event.title,
-                        modifier = Modifier
+                        modifier = Modifier.Companion
                             .fillMaxWidth()
                             .height(220.dp)
-                            .clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Crop
+                            .clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp)),
+                        contentScale = ContentScale.Companion.Crop
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.Companion.height(12.dp))
                 }
                 Text("${event.eventType}")
                 Text(event.location)
                 Text("$startDateText - $endDateText")
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.Companion.height(8.dp))
                 Text("Description: ${event.description}")
             }
         }

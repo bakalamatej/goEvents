@@ -56,9 +56,9 @@ class EventController (
     fun save(
         @Valid @RequestBody body: EventRequest
     ): EventResponse {
-        //val ownerId = SecurityContextHolder.getContext().authentication.principal as String
+        val ownerId = SecurityContextHolder.getContext().authentication.principal as String
 
-        val ownerId = ObjectId.get() // TEST PURPOSES ONLY
+        //val ownerId = ObjectId.get() // TEST PURPOSES ONLY
 
         val event = eventRepository.save(
             Event(
@@ -72,8 +72,8 @@ class EventController (
                 imageUrl = body.imageUrl,
                 link = body.link,
                 createdAt = Instant.now(),
-                //ownerId = ObjectId(ownerId)
-                ownerId = ownerId
+                ownerId = ObjectId(ownerId)
+                //ownerId = ownerId
             )
         )
         return event.toResponse()

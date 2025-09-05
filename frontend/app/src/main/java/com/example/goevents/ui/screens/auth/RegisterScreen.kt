@@ -2,6 +2,7 @@ package com.example.goevents.ui.screens.auth
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -15,13 +16,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    viewModel: AuthViewModel = viewModel()
+    viewModel: AuthViewModel = androidx.hilt.navigation.compose.hiltViewModel()
 ) {
     val isRegistering by viewModel.isRegistering.collectAsState()
     val registerError by viewModel.registerError.collectAsState()
@@ -34,6 +36,15 @@ fun RegisterScreen(
 
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(registerSuccess) {
+        if (registerSuccess) {
+            navController.navigate("login") {
+                popUpTo("register") { inclusive = true }
+            }
+        }
+        viewModel.resetRegisterSuccess()
+    }
 
     Column(
         modifier = Modifier
@@ -50,10 +61,13 @@ fun RegisterScreen(
             value = email,
             onValueChange = {
                 email = it
-                if (registerError != null) viewModel.setRegisterError("")
+                if (!registerError.isNullOrEmpty()) viewModel.setRegisterError("")
             },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 56.dp),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email
             )
@@ -65,13 +79,13 @@ fun RegisterScreen(
             value = name,
             onValueChange = {
                 name = it
-                if (registerError != null) viewModel.setRegisterError("")
+                if (!registerError.isNullOrEmpty()) viewModel.setRegisterError("")
             },
-            label = { Text("Name") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Email
-            )
+            label = { Text("Organization Name") },
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 56.dp),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -80,10 +94,13 @@ fun RegisterScreen(
             value = password,
             onValueChange = {
                 password = it
-                if (registerError != null) viewModel.setRegisterError("")
+                if (!registerError.isNullOrEmpty()) viewModel.setRegisterError("")
             },
             label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 56.dp),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val icon = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
@@ -102,10 +119,13 @@ fun RegisterScreen(
             value = confirmPassword,
             onValueChange = {
                 confirmPassword = it
-                if (registerError != null) viewModel.setRegisterError("")
+                if (!registerError.isNullOrEmpty()) viewModel.setRegisterError("")
             },
             label = { Text("Confirm Password") },
-            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 56.dp),
             visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val icon = if (confirmPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
@@ -132,14 +152,16 @@ fun RegisterScreen(
                 } else if (email.isBlank() || password.isBlank()) {
                     viewModel.setRegisterError("Email and password must not be empty")
                 } else {
-                    val trimmedEmail = email.trim()
-                    viewModel.register(trimmedEmail, name, password)
+                    viewModel.register(email.trim(), name.trim(), password)
                 }
             },
-            enabled = !isRegistering && registerError.isNullOrEmpty(),
-            modifier = Modifier.fillMaxWidth()
+            enabled = !isRegistering,
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
         ) {
-            Text(if (isRegistering) "Registering..." else "Register")
+            Text(if (isRegistering) "Registering..." else "Register", fontSize = 16.sp)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -147,17 +169,10 @@ fun RegisterScreen(
         Text(
             text = "Already have an account? Login",
             modifier = Modifier.clickable {
+                viewModel.setRegisterError("")
                 navController.navigate("login")
             },
             color = MaterialTheme.colorScheme.primary
         )
-    }
-
-    LaunchedEffect(registerSuccess) {
-        if (registerSuccess) {
-            navController.navigate("login") {
-                popUpTo("register") { inclusive = true }
-            }
-        }
     }
 }

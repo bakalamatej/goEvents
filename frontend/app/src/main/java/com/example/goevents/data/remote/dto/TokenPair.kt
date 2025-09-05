@@ -1,6 +1,6 @@
 package com.example.goevents.data.remote.dto
 
-data class LoginResponse(
+data class TokenPair(
     val accessToken: String,
     val refreshToken: String
 )

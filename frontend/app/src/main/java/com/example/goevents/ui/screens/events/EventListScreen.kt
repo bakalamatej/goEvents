@@ -3,6 +3,7 @@ package com.example.goevents.ui.screens.events
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.goevents.ui.components.EventCard
+import com.example.goevents.ui.components.EventDetailModal
 import com.example.goevents.ui.components.FilterDialog
 import com.google.accompanist.swiperefresh.*
 
@@ -44,6 +46,7 @@ fun EventListScreen(
                 viewModel.filterEvents(title = it)
             },
             placeholder = { Text("Search by title") },
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 4.dp),
